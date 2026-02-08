@@ -3,7 +3,6 @@
 [![Ask DeepWiki](https://devin.ai/assets/askdeepwiki.png)](https://deepwiki.com/webdigixit/err-boost.git)
 
 ![NPM Version](https://img.shields.io/npm/v/err-boost)
-![Build Status](https://github.com/webdigixit/err-boost/actions/workflows/ci.yml/badge.svg)
 ![License](https://img.shields.io/github/license/webdigixit/err-boost)
 
 The ultimate error-handling utility for modern JavaScript. Enhance, wrap, and trace errors without losing metadata.
