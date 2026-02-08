@@ -1,0 +1,58 @@
+{
+  "name": "err-boost",
+  "version": "1.0.0",
+  "description": "The ultimate error-handling utility for modern JavaScript. Enhance, wrap, and trace errors without losing metadata.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=16"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "dev": "tsup src/index.ts --format cjs,esm --watch --dts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:cov": "vitest run --coverage",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "error",
+    "errors",
+    "ono",
+    "wrap",
+    "stack-trace",
+    "metadata",
+    "json",
+    "debug"
+  ],
+  "author": "webdigixit",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webdigixit/err-boost.git"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "@vitest/coverage-v8": "^1.2.0",
+    "eslint": "^8.56.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.3.0",
+    "vitest": "^1.2.0"
+  }
+}
