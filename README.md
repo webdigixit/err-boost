@@ -2,6 +2,10 @@
 
 [![Ask DeepWiki](https://devin.ai/assets/askdeepwiki.png)](https://deepwiki.com/webdigixit/err-boost.git)
 
+![NPM Version](https://img.shields.io/npm/v/err-boost)
+![Build Status](https://github.com/your-username/err-boost/actions/workflows/ci.yml/badge.svg)
+![License](https://img.shields.io/github/license/your-username/err-boost)
+
 The ultimate error-handling utility for modern JavaScript. Enhance, wrap, and trace errors without losing metadata.
 
 ErrBoost is a lightweight utility for enhancing JavaScript and TypeScript errors with rich metadata, stack preservation, automatic timestamps, and better JSON serialization. Wrap, extend, and re-throw errors without losing the original context or custom properties.
