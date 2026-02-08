@@ -1,101 +1,135 @@
-ErrBoost
+# err-boost
 
-Boost your JavaScript/TypeScript error handling — wrap, extend, and re-throw errors without losing original context or custom properties.
+[![Ask DeepWiki](https://devin.ai/assets/askdeepwiki.png)](https://deepwiki.com/webdigixit/err-boost.git)
 
-A lightweight utility for enhancing JavaScript errors with rich metadata, stack preservation, automatic timestamps, and better JSON serialization.
+The ultimate error-handling utility for modern JavaScript. Enhance, wrap, and trace errors without losing metadata.
 
-📌 Features
+ErrBoost is a lightweight utility for enhancing JavaScript and TypeScript errors with rich metadata, stack preservation, automatic timestamps, and better JSON serialization. Wrap, extend, and re-throw errors without losing the original context or custom properties.
 
-Zero-Loss Error Wrapping – Preserve original error message, stack trace, and properties when re-throwing.
+## Features
 
-Smart JSON Serialization – Built-in toJSON() support to include custom properties and stack data in logs.
+-   **Zero-Loss Error Wrapping** – Preserve the original error message, stack trace, and properties when re-throwing.
+-   **Rich Metadata** – Attach any custom properties to your errors for better logging and debugging.
+-   **Smart JSON Serialization** – A built-in `toJSON()` method includes custom properties and stack data in logs, unlike standard `Error` objects.
+-   **Auto-Timestamping** – Every boosted error gets an ISO timestamp for precise event tracking.
+-   **Modern `cause` Support** – Uses the native `Error.cause` property to maintain clean, inspectable error chains.
+-   **Flexible API** – Create errors from messages, objects, and original `Error` instances with a single, intuitive function.
+-   **Lightweight & Typed** – Written in TypeScript with zero external dependencies.
 
-Auto-Timestamping – Every error gets an ISO timestamp for easier debugging.
+## Installation
 
-Modern Cause Support – Uses the native cause property to maintain clean error chains.
-
-Flexible API – Multiple function signatures for messages, objects, and original Error instances.
-
-Lightweight & Typed – Written in TypeScript with no external dependencies.
-
-📦 Installation
-
-Install via npm:
-
+```sh
 npm install err-boost
+```
 
-🚀 Usage
-📌 CommonJS (Node.js)
-const errBoost = require("err-boost");
+## Usage
 
-📌 ESM / TypeScript
+### ESM / TypeScript
+
+```javascript
 import errBoost from "err-boost";
+```
 
-🧠 API
-errBoost([originalError], [props], [message])
+### CommonJS (Node.js)
 
-Creates a boosted Error with:
+```javascript
+const errBoost = require("err-boost");
+```
 
-The given message
+### Creating an Error with Custom Properties
 
-Optional custom props included in the error object
+Attach any metadata you need. This is perfect for logging structured data like request IDs or status codes.
 
-Preservation of original error data (if provided)
-
-Example:
-
-throw errBoost({ code: "NOT_FOUND", status: 404 }, `Resource not found: ${url}`);
-
-💡 Advanced Usage
-Wrap an existing error:
-try {
-  // some logic
-} catch (err) {
-  throw errBoost(err, { severity: "high" }, "Operation failed");
+```javascript
+function findUser(id) {
+  // ...logic
+  if (!user) {
+    throw errBoost({ userId: id, status: 404 }, "User not found");
+  }
 }
+```
 
-Create specific built-in error types:
-throw errBoost.range("Value must be positive");
+### Wrapping an Existing Error
+
+Preserve the original error's stack trace and message while adding new context.
+
+```javascript
+try {
+  await database.connect();
+} catch (err) {
+  // The original stack trace and message from `err` are preserved.
+  throw errBoost(err, { severity: "high" }, "Failed to connect to database");
+}
+```
+
+### Using Built-in Error Types
+
+Quickly create specific, typed errors with the same enhancement features.
+
+```javascript
+// Creates a boosted TypeError
 throw errBoost.type({ expected: "string" }, "Invalid input type");
 
-🔍 JSON Support
+// Creates a boosted RangeError
+throw errBoost.range("Value must be positive");
+```
 
-Standard JavaScript errors return an empty object when stringified. ErrBoost provides a rich JSON output automatically:
+## JSON Serialization for Better Logging
 
-const err = errBoost({ id: 123 }, "Test Error");
+Standard JavaScript errors return an empty object when stringified. ErrBoost provides rich, structured JSON output out of the box, making it ideal for logging systems.
+
+```javascript
+const err = errBoost({ id: 123, code: "E_FAIL" }, "Test Error");
+
 console.log(JSON.stringify(err, null, 2));
+```
 
+**Output:**
 
-Example output:
-
+```json
 {
   "name": "ErrBoost",
   "message": "Test Error",
-  "stack": "ErrBoost: Test Error at...",
+  "stack": "ErrBoost: Test Error\n    at <anonymous>:1:13",
   "timestamp": "2026-02-08T17:00:00.000Z",
   "isBoosted": true,
-  "id": 123
+  "id": 123,
+  "code": "E_FAIL"
 }
+```
 
-📚 Examples
-import errBoost from "err-boost";
+## API
 
-// Basic error
-throw errBoost("Something went wrong!");
+### `errBoost([originalError], [props], [message])`
 
-// Error with properties
-throw errBoost({ code: "E_FAIL" }, "Failed to process request");
+The main factory function for creating enhanced errors. It intelligently handles arguments in any order.
 
-🧪 Testing
+-   `originalError` (Optional): An `Error` instance to wrap.
+-   `props` (Optional): An object with custom properties to add to the error.
+-   `message` (Optional): A string message for the error.
 
-The repo includes a testing script (test-run.js) and configuration for Mocha, Karma, and NYC. You can run tests with:
+### `errBoost.wrap(err, [context], [message])`
 
+A specialized wrapper designed for `catch` blocks. It ensures any thrown value (even non-Error objects) is properly converted into a boosted error.
+
+-   `err` (Required): The caught value (`unknown`).
+-   `context` (Optional): An object with custom properties.
+-   `message` (Optional): A string message to prepend to the original error's message.
+
+### Static Helpers
+
+-   `errBoost.type([props], [message])`
+-   `errBoost.range([props], [message])`
+-   `errBoost.syntax([props], [message])`
+
+## Testing
+
+This repository uses Vitest for testing. To run the test suite:
+
+```sh
 npm test
+```
 
-🛡 License
+## License
 
-Distributed under the MIT License.
-
-📌 About
-
-No official website or topics are provided in the original repository metadata.
+Distributed under the MIT License. See `LICENSE` for more information.
